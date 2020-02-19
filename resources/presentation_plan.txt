@@ -1,0 +1,192 @@
+
+Task:
+
+1. ionic start quiz blank
+
+
+2. Get ionic Dev App on phones: need ip address, port 8100. 
+
+
+3. Explain Ionic infrastructure
+
+https://beta.ionicframework.com/docs/building/webview
+
+Show tree structure.
+
+4. Edit home.page.html with basic layout, not using any variables.
+
+<ion-header>
+  <ion-toolbar>
+    <ion-title color="secondary">
+      A Monty Python Quiz!
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item class="question">What is your quest?</ion-item>
+  <ion-list>
+    <ion-radio-group>
+      <ion-item *ngFor="let ans of ['To defeat France', 'To be the king', 'To find the Holy Grail']">
+        <ion-label>{{ans}}</ion-label>
+        <ion-radio value={{ans}}></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+  <ion-button type="submit">Submit</ion-button>
+  <div>
+    You are a nice person!
+  </div>
+
+</ion-content>
+
+
+5. Define QuestionAndAnswers interface to home.page.ts.
+
+export interface QuestionAndAnswers {
+  question: string;
+  answers: string[];
+  correctAnswer: string;
+}
+
+
+6. Add data to home.page.ts and variables to .html.
+
+  public qandas: QuestionAndAnswers[] = [
+    {
+      question: 'What is your name?',
+      answers: [
+        'Sir Lancelot',
+        'Sir Bedevere',
+        'A Dirty Peasant',
+        'A Knight Who Says Ni',
+        'The Black Knight',
+        'A Shrubbery',
+      ],
+      correctAnswer: 'Sir Bedevere',
+    },
+    {
+      question: 'What is your quest?',
+      answers: [
+        'To be your king',
+        'To throw the holy hand-granade',
+        'To seek the Holy Grail',
+      ],
+      correctAnswer: 'To seek the Holy Grail',
+    },
+    {
+      question: 'What is your favorite color?',
+      answers: [
+        'Blue',
+        'Orange',
+        'Chartreuse',
+        'Red',
+        'Green',
+      ],
+      correctAnswer: 'Red',
+    },
+  ];
+
+  public feedback: string = '';
+  public questionNum: number = 0;
+
+
+
+<ion-item class="question">{{this.qandas[questionNum].question}}</ion-item>
+
+      	
+
+  {{feedback}}
+  
+
+
+7. ionic generate service services/quizData
+
+
+
+8. Move qandas, questionNum to quiz-data.service.ts.  including QuestionAndAnswers.
+
+Change public to private on data.
+
+Add APIs:
+
+  public getQuestion() {
+    return this.qandas[this.questionNum].question;
+  }
+
+  public getAnswers() {
+    return this.qandas[this.questionNum].answers;
+  }
+
+  public isAnswerCorrect(answer: string): boolean {
+    return answer === this.qandas[this.questionNum].correctAnswer;
+  }
+
+  public isLastQuestion() {
+    return this.questionNum === this.qandas.length - 1;
+  }
+
+  public goToNextQuestion() {
+    this.questionNum++;
+  }
+
+
+
+9. Add dependency to home.page.ts.
+
+public quizDataSvc: QuizDataService,
+
+
+10. Fix home.page.html to use quizDataSvc.
+
+<ion-item class="question">{{this.quizDataSvc.getQuestion()}}</ion-item>
+
+<ion-radio-group (ionChange)="answerSelected($event)">
+      <ion-item *ngFor="let ans of this.quizDataSvc.getAnswers()">
+
+
+<ion-button type="submit" (click)="submit()">Submit</ion-button>
+
+11. Add code to home.page.ts to process results:
+
+
+  private selectedAnswer = '';
+
+  answerSelected(value) {
+    // console.log('selected = ', value.detail.value);
+    this.selectedAnswer = value.detail.value;
+  }
+
+  submit() {
+    if (this.quizDataSvc.isAnswerCorrect(this.selectedAnswer)) {
+      this.feedback = 'Correct!';
+      setTimeout(() => this.gotoNextQuestion(), 1000);
+    } else {
+      this.feedback = 'Sorry, no.  Try again.';
+    }
+  }
+
+  private gotoNextQuestion() {
+    if (this.quizDataSvc.isLastQuestion()) {
+      this.feedback = 'You have finished the quiz.';
+    } else {
+      this.quizDataSvc.goToNextQuestion();
+      this.feedback = '';
+    }
+  }
+
+11. Add scss to home.page.scss.
+
+
+.question {
+  font-weight: bold;
+}
+
+ion-button {
+  margin-left: auto;
+  margin-right: auto;
+  display: table;
+}
+
+
+
