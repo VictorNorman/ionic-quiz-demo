@@ -7,18 +7,20 @@
 </ion-header>
 
 <ion-content>
-  <ion-item class="question">{{this.quizDataSvc.getQuestion()}}</ion-item>
-  <ion-list>
-    <ion-radio-group (ionChange)="answerSelected($event)">
-      <ion-item *ngFor="let ans of this.quizDataSvc.getAnswers()">
-        <ion-label>{{ans}}</ion-label>
-        <ion-radio value={{ans}}></ion-radio>
-      </ion-item>
-    </ion-radio-group>
-  </ion-list>
-  <ion-button type="submit" (click)="submit()">Submit</ion-button>
-  <div>
-    {{feedback}}
+  <div *ngIf="this.dataLoaded">
+    <ion-item class="question">{{this.quizDataSvc.getQuestion()}}</ion-item>
+    <ion-list>
+      <ion-radio-group (ionChange)="answerSelected($event)">
+        <ion-item *ngFor="let ans of this.quizDataSvc.getAnswers()">
+          <ion-label>{{ans}}</ion-label>
+          <ion-radio value={{ans}}></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+    <ion-button type="submit" (click)="submit()">Submit</ion-button>
+    <div>
+      {{feedback}}
+    </div>
   </div>
 
 </ion-content>

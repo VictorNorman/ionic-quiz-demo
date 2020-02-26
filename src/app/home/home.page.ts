@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { QuizDataService } from '../services/quiz-data.service';
+import { QuizDataService, QuestionAndAnswers } from '../services/quiz-data.service';
 
 @Component({
   selector: 'app-home',
@@ -11,9 +11,18 @@ export class HomePage {
   private selectedAnswer = '';
   public feedback = '';
 
+  // Note if the data has been loaded from firebase into the quizDataSvc.
+  // Don't call functions in quizDataSvc until it has data.
+  public dataLoaded = false;
+
   constructor(
     public quizDataSvc: QuizDataService,
   ) {
+    this.quizDataSvc.qandasSubj.subscribe(hasArrived => {
+      if (hasArrived && this.quizDataSvc.isDataLoaded()) {
+        this.dataLoaded = true;
+      }
+    });
   }
 
 
