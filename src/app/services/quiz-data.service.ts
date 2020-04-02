@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { LoadingController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 
 export interface QuestionAndAnswers {
@@ -14,40 +13,6 @@ export interface QuestionAndAnswers {
 })
 export class QuizDataService {
 
-  // private old_qandas: QuestionAndAnswers[] = [
-  //   {
-  //     question: 'What is your name?',
-  //     answers: [
-  //       'Sir Lancelot',
-  //       'Sir Bedevere',
-  //       'A Dirty Peasant',
-  //       'A Knight Who Says Ni',
-  //       'The Black Knight',
-  //       'A Shrubbery',
-  //     ],
-  //     correctAnswer: 'Sir Bedevere',
-  //   },
-  //   {
-  //     question: 'What is your quest?',
-  //     answers: [
-  //       'To be your king',
-  //       'To throw the holy hand-granade',
-  //       'To seek the Holy Grail',
-  //     ],
-  //     correctAnswer: 'To seek the Holy Grail',
-  //   },
-  //   {
-  //     question: 'What is your favorite color?',
-  //     answers: [
-  //       'Blue',
-  //       'Orange',
-  //       'Chartreuse',
-  //       'Red',
-  //       'Green',
-  //     ],
-  //     correctAnswer: 'Red',
-  //   },
-  // ];
 
   private questionNum: number;
 
@@ -56,13 +21,12 @@ export class QuizDataService {
   // Store the data we pull down from firestore
   private data: QuestionAndAnswers[] = [];
 
-  public qandasSubj: BehaviorSubject<boolean> = 
+  public qandasSubj: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(undefined);
 
 
   constructor(
     private db: AngularFirestore,
-    private loadingCtrl: LoadingController,
   ) {
     this.questionNum = 0;
     console.log('qandaCollection = ', this.qandaCollection);
@@ -75,9 +39,6 @@ export class QuizDataService {
 
     this.data = [];
     this.qandaCollection = this.db.collection<QuestionAndAnswers>('qandas');
-
-    const loading = await this.loadingCtrl.create();
-    await loading.present();
 
     const qandaRef = this.qandaCollection.doc('0');
 
@@ -92,13 +53,11 @@ export class QuizDataService {
           answers: qanda.answers || qanda.answerds,
         });
       });
-      loading.dismiss();
-      // console.log('quiz-data.service: loadAllData: data is ', this.data);
 
       // Tell all subscribers that the data has arrived.
       this.qandasSubj.next(true);
     });
-    
+
   }
 
   public isDataLoaded() {

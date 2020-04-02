@@ -6,6 +6,12 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { BehaviorSubject } from 'rxjs';
+import { QuizDataService } from './services/quiz-data.service';
+import { QuizDataServiceMock, FirestoreStub } from 'src/mocks/mocks';
+
+
 
 describe('AppComponent', () => {
 
@@ -24,6 +30,8 @@ describe('AppComponent', () => {
         { provide: StatusBar, useValue: statusBarSpy },
         { provide: SplashScreen, useValue: splashScreenSpy },
         { provide: Platform, useValue: platformSpy },
+        { provide: AngularFirestore, FirestoreStub },
+        { provide: QuizDataService, useClass: QuizDataServiceMock },
       ],
     }).compileComponents();
   }));
