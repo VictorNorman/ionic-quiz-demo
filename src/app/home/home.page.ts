@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { QuizDataService, QuestionAndAnswers } from '../services/quiz-data.service';
+import { QuizDataService } from '../services/quiz-data.service';
 
 @Component({
   selector: 'app-home',
@@ -24,7 +24,6 @@ export class HomePage {
       }
     });
   }
-
 
   answerSelected(value) {
     // console.log('selected = ', value.detail.value);

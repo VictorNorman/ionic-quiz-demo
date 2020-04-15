@@ -4,11 +4,15 @@ export class AppPage {
   navigateTo() {
     return browser.get('/');
   }
-  getParagraphText() {
-    return element(by.deepCss('app-root ion-content')).getText();
+  getQuestionText() {
+    // return element(by.deepCss('app-root ion-content')).getText();
+    // return element(by.deepCss('.question')).getText();
+    return element(by.deepCss('ion-item .question')).getText();
   }
   getHeaderText() {
-    return element(by.deepCss('app-root ion-header ion-toolbar ion-title')).getText();
+    // const el: ElementFinder  = element(by.deepCss('ion-title'));
+    // console.log("😀😀😀😀 EL IS: ", el);
+    return element(by.deepCss('.test-title')).getText();
   }
 
   getRadioGroupItemCount() {

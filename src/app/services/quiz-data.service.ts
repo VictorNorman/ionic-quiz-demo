@@ -32,7 +32,7 @@ export class QuizDataService {
     console.log('qandaCollection = ', this.qandaCollection);
   }
 
-  async loadAllData() {
+  loadAllData() {
     if (this.data.length !== 0) {
       return;
     }
