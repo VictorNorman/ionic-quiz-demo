@@ -4,28 +4,31 @@ export class AppPage {
   navigateTo() {
     return browser.get('/');
   }
-  getQuestionText() {
-    // return element(by.deepCss('app-root ion-content')).getText();
-    // return element(by.deepCss('.question')).getText();
-    return element(by.deepCss('ion-item .question')).getText();
-  }
-  getHeaderText() {
-    // const el: ElementFinder  = element(by.deepCss('ion-title'));
-    // console.log("😀😀😀😀 EL IS: ", el);
+  getTitleText() {
     return element(by.deepCss('.test-title')).getText();
   }
 
+  getQuestionText() {
+    // return element(by.deepCss('app-root ion-content')).getText();
+    // return element(by.deepCss('.question')).getText(z);
+    return element(by.deepCss('ion-item.test-question')).getText();
+  }
+
   getRadioGroupItemCount() {
-    const radioGroupItems: ElementArrayFinder = 
-        element.all(by.deepCss('app-root ion-content ion-list ion-radio-group ion-item'));
+    const radioGroupItems: ElementArrayFinder =
+      element.all(by.deepCss('app-root ion-content ion-list ion-radio-group ion-item'));
     return radioGroupItems.count();
   }
 
-  selectSirBedevere() {
-
+  selectRadioButtonAnswer(answer: string): void {
+    element(by.cssContainingText('ion-item', answer)).click();
   }
 
-  clickSubmitButton() {
+  async clickSubmitButton() {
+    await element(by.deepCss('ion-button[type="submit"]')).click();
+  }
 
+  getFeedbackText() {
+    return element(by.deepCss('.test-feedback')).getText();
   }
 }
